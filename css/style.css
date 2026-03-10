@@ -2095,3 +2095,37 @@ span.error {
 .gsap-reveal-img .reveal-wrap .reveal-content .portfolio-item-content h3 {
   margin-bottom: 10px;
 }
+
+
+/* 漢堡選單圖示樣式 */
+.hamburger-icon {
+  width: 30px;
+  height: 20px;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.hamburger-icon span {
+  display: block;
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  background: #ffffff; /* 這裡設定線條顏色，白色在藍色背景較明顯 */
+  border-radius: 9px;
+  opacity: 1;
+  left: 0;
+  transform: rotate(0deg);
+  transition: .25s ease-in-out;
+}
+
+/* 設定三條線的垂直位置 */
+.hamburger-icon span:nth-child(1) { top: 0px; }
+.hamburger-icon span:nth-child(2) { top: 9px; }
+.hamburger-icon span:nth-child(3) { top: 18px; }
+
+/* 修正 Menu 容器的間距 */
+.site-nav-ul-none-onepage li a {
+  padding: 10px;
+  display: inline-block;
+}
