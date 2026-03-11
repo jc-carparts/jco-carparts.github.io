@@ -763,30 +763,33 @@
               </form> -->
 
 
-<form action="https://formspree.io/f/xwvrlpqr" method="POST" class="form-outline-style-v1">
-  <div class="form-group row mb-0">
+<div class="col-md-6">
+  <form action="https://formspree.io/f/xwvrlpqr" method="POST" class="form-outline-style-v1" id="jc-contact-form">
+    <div class="form-group row mb-0">
 
-    <div class="col-lg-6 form-group gsap-reveal">
-      <input name="企業名稱_稱謂" type="text" class="form-control s-form-v3__input" placeholder="* Nome 企業名稱 / 稱謂" required>
+      <div class="col-lg-6 form-group gsap-reveal">
+        <input name="企業名稱_稱謂" type="text" class="form-control s-form-v3__input" placeholder="* Nome 企業名稱 / 稱謂" required>
+      </div>
+
+      <div class="col-lg-6 form-group gsap-reveal">
+        <input type="email" name="email" class="form-control s-form-v3__input" placeholder="* INDIRIZZO MAIL 電子郵件" required>
+      </div>
+
+      <div class="col-lg-12 form-group gsap-reveal">
+        <textarea name="留言內容" class="form-control s-form-v3__input" rows="5" placeholder="* RICHIESTE O COMMENTI 留言內容" required></textarea>
+      </div>
+
     </div>
 
-    <div class="col-lg-6 form-group gsap-reveal">
-      <input type="email" name="email" class="form-control s-form-v3__input" placeholder="* Indirizzo Mail 電子郵件" required>
+    <div class="form-group row gsap-reveal">
+      <div class="col-md-12 d-flex align-items-center">
+        <input type="submit" id="submit-btn" class="btn btn-outline-pill btn-custom-light mr-3" value="發送">
+        <span class="submitting"></span>
+      </div>
     </div>
-
-    <div class="col-lg-12 form-group gsap-reveal">
-      <textarea name="留言內容" class="form-control s-form-v3__input" rows="5" placeholder="* Richieste O Commenti 留言內容" required></textarea>
-    </div>
-
-  </div>
-
-  <div class="form-group row gsap-reveal">
-    <div class="col-md-12 d-flex align-items-center">
-      <input type="submit" class="btn btn-outline-pill btn-custom-light mr-3" value="發送">
-      <span class="submitting"></span>
-    </div>
-  </div>
-</form>
+    <div id="form-status" style="display:none; margin-top: 15px; font-weight: bold;"></div>
+  </form>
+</div>
 
 
               <div id="form-message-warning" class="mt-4"></div>
@@ -866,6 +869,51 @@
 
     <script src="js/scripts-dist.js"></script>
     <script src="js/main.js"></script>
+
+<script>
+  const jcForm = document.getElementById("jc-contact-form");
+  const formStatus = document.getElementById("form-status");
+  const submitBtn = document.getElementById("submit-btn");
+
+  async function handleJcSubmit(event) {
+    event.preventDefault(); // 阻止原本的頁面跳轉
+
+    const data = new FormData(event.target);
+    submitBtn.value = "傳送中...";
+    submitBtn.disabled = true;
+
+    fetch(event.target.action, {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    }).then(response => {
+      if (response.ok) {
+        // 核心功能：成功後另開新分頁顯示 Formspree 的感謝頁
+        window.open("./thanks.html", "_blank");
+
+        // 在原官網頁面顯示成功訊息
+        formStatus.innerHTML = "✓ 已成功送出！感謝您的留言。";
+        formStatus.style.color = "#28a745";
+        formStatus.style.display = "block";
+
+        jcForm.reset(); // 清空表單
+      } else {
+        formStatus.innerHTML = "抱歉，送出時發生錯誤。";
+        formStatus.style.color = "#dc3545";
+        formStatus.style.display = "block";
+      }
+    }).catch(error => {
+      formStatus.innerHTML = "網路連線異常，請稍後再試。";
+      formStatus.style.display = "block";
+    }).finally(() => {
+      submitBtn.value = "發送";
+      submitBtn.disabled = false;
+    });
+  }
+
+  jcForm.addEventListener("submit", handleJcSubmit);
+</script>
+
 
   </body>
 </html>
